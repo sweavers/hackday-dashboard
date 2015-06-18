@@ -3,7 +3,8 @@ require 'sinatra/reloader'
 require 'json'
 
 set :port, 8089
-set :environment, :production
+set :environment, :development
+#set :environment, :production
 set :server, 'webrick'
 
 
@@ -14,7 +15,7 @@ class DryCode
 		@mm = ''
 		@ss = ''
 
-		file = './public/results_2.json'
+		file = './public/results.json'
 		json_file = File.read(file)
 
 		converted_file = JSON.parse(json_file)
@@ -96,8 +97,6 @@ get '/dashboard' do
 	erb :dashboard_view
 end
 
-
-
 =begin
 <% for i in 0..@item_count+@item_count
 		if i%2 == 0%>
@@ -122,10 +121,13 @@ end
 <% end %>
 =end
 
+get '/edit' do
 
-=begin
+	erb :edit_view
+end
 
-post '/add_json' do
+
+post '/update_json' do
 	if params["jsonString"].nil? || params["jsonString"].empty?
 		puts 'No json was entered'
 		@json_string = 'empty'
@@ -175,5 +177,3 @@ post '/add_json' do
 
 	erb :dashboard_view
 end
-
-=end

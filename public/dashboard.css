@@ -9,6 +9,15 @@ body {
 	float: left;
 }
 
+.submit-button {
+	float: left;
+	margin-left: 15px;
+}
+
+.memo-box {
+	height: 100px;
+}
+
 .sub-header {
 	font-weight: bold;
 	margin-left: 15px;
