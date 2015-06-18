@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="dashboard.css" type="text/css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script>
+</script>
+<style>
+	.Green {
+		background: #26A65B;
+		width:<%= @width_value + "%;"%>
+		height:<%= @height_value + "vh;"%>
+		float: left;
+		border: 2px solid #BDC3C7;
+		position:relative;
+	}			
+	
+	.Amber {
+		background: #EB9532;
+		width:<%= @width_value + "%;"%>
+		height:<%= @height_value + "vh;"%>
+		float: left;
+		border: 2px solid #BDC3C7;
+		position:relative;
+	}			
+	
+	.Red {
+		background: #D64541;
+		width:<%= @width_value + "%;"%>
+		height:<%= @height_value + "vh;"%>
+		float: left;
+		border: 2px solid #BDC3C7;
+		position:relative;
+	}
+</style>
+<head>
+</head>
+<body>
+<% count = 0
+	@new_hash.each do |profile, data|
+		this_week = data['this_week']
+		next_week = data['next_week']
+		rag_status = data['rag_status']
+		rag_justification = data['rag_justification']
+		risks = data['risks']
+		count = count + 1%>
+			<button type="button" class="<%=rag_status%>" data-toggle="modal" data-target="#myModal<%=count%>">
+				<div class="centreMe">
+				  <div><b><%=profile%></b></div>
+				</div>
+			</button>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal<%=count%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-xl">
+					<div class="modal-content">
+					  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">x</button>
+							<h4 class="modal-title" id="myModalLabel"><%=profile%></h4>
+					  </div>
+						<div class="sub-header">What has happened this week:</div>
+					  <div class="modal-body">
+							<%=this_week%>
+					  </div>
+						<div class="sub-header">What is planned for next week:</div>
+						<div class="modal-body">
+							<%=next_week%>
+						</div>
+						<div class="sub-header">Delivery RAG status:</div>
+						<div class="modal-body">
+							<%=rag_status%>
+						</div>
+						<div class="sub-header">RAG status justification:</div>
+						<div class="modal-body">
+							<%=rag_justification%>
+						</div>
+						<div class="sub-header">Risks/Issues:</div>
+						<div class="modal-body">
+							<%=risks%>
+						</div>
+					  <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					  </div>
+					</div>
+			  </div>
+			</div>
+<% end %>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+</body>
+</html>
