@@ -50,19 +50,92 @@ class DryCode
 		new_hash = Hash[new_hash.sort]
 		new_hash
 	end
+
+	def get_width (root)
+		number_of_rows = 0
+		width_value = 0
+
+		if root == root.round
+			number_of_rows = root
+			width_value = 100.to_f/number_of_rows
+		else
+			number_of_rows = root + 1
+			width_value = 100.to_f/root.to_i
+		end
+
+		@width_value = width_value.to_s
+	end
+
+	def get_height (root)
+		number_of_rows = 0
+		height_value = 0
+
+		if root == root.round
+			number_of_rows = root
+			height_value = 100.to_f/number_of_rows
+		else
+			number_of_rows = root + 1
+			height_value = 100.to_f/number_of_rows.round
+		end
+
+		@height_value = height_value.to_s
+	end
 end
 
 class_obj = DryCode.new
 
-
 get '/dashboard' do
+	new_hash = class_obj.convert_json
+
+	item_count = 0
+	new_hash.each do |item|
+		item_count = item_count + 1
+	end
+
+	root = Math.sqrt(item_count)
+
+	width_value = class_obj.get_width(root)
+	height_value = class_obj.get_height(root)
+
+	@width_value = width_value
+	@height_value = height_value
+	@new_hash = new_hash
+	erb :dashboard_view
+end
+
+get '/edit' do
+	erb :edit_view
+end
+
+
+post '/update_json' do
+	wp_title = params["wp_title"]
+	this_week = params["this_week"]
+	next_week = params["next_week"]
+	rag_status = params["rag_status"]
+	rag_justification = params["rag_justification"]
+	risks = params["risks"]
+
+	puts '#############################'
+	puts wp_title
+	puts this_week
+	puts next_week
+	puts rag_status
+	puts rag_justification
+	puts risks
+	puts '#############################'
+
+	file = './public/results.json'
+	json_file = File.read(file)
+	file_trim = json_file.tr("]", "")
+
 	new_hash = {}
-	@string = ''
-	@mm = ''
-	@ss = ''
-	@pass_colour = "#26A65B"
-	@fail_colour = "#D64541"
-	@neutral_colour = "#EB9532"
+	
+	new_json = ',{"wp_title":"' + wp_title + '","result":{"this_week":"' + this_week + '","next_week":"' + next_week + '","rag_status":"' + rag_status + '","rag_justification":"' + rag_justification + '","risks":"' + risks + '"}}'
+
+	new_file = file_trim + new_json + ']'
+
+	File.write(file, new_file)
 
 	new_hash = class_obj.convert_json
 
@@ -73,107 +146,12 @@ get '/dashboard' do
 
 	root = Math.sqrt(item_count)
 
-	number_of_rows = 0
-	width_value = 0
-	height_value = 0
+	width_value = class_obj.get_width(root)
+	height_value = class_obj.get_height(root)
 
-	if root == root.round
-		number_of_rows = root
-		width_value = 100.to_f/number_of_rows
-		height_value = 100.to_f/number_of_rows
-	else
-		number_of_rows = root + 1
-		width_value = 100.to_f/root.to_i
-		height_value = 100.to_f/number_of_rows.round
-	end
-
-	@width_value = width_value.to_s
-	@height_value = height_value.to_s
-	@item_count = item_count
-	@pass_colour
-	@fail_colour
+	@width_value = width_value
+	@height_value = height_value
 	@new_hash = new_hash
-
-	erb :dashboard_view
-end
-
-=begin
-<% for i in 0..@item_count+@item_count
-		if i%2 == 0%>
-			.exitCode<%= i %> {
-				background: <%= @pass_colour + ";"%>
-				width:<%= @width_value + "%;"%>
-				height:<%= @height_value + "vh;"%>
-				float: left;
-				border: 2px solid #BDC3C7;
-				position:relative;
-			}
-	<% else %>
-			.exitCode<%= i %> {
-				background: <%= @fail_colour + ";"%>
-				width:<%= @width_value + "%;"%>
-				height:<%= @height_value + "vh;"%>
-				float: left;
-				border: 2px solid #BDC3C7;
-				position:relative;
-			}
-	<% end %>
-<% end %>
-=end
-
-get '/edit' do
-
-	erb :edit_view
-end
-
-
-post '/update_json' do
-	if params["jsonString"].nil? || params["jsonString"].empty?
-		puts 'No json was entered'
-		@json_string = 'empty'
-	else
-		@json_string = params["jsonString"]
-	end
-
-	new_hash = {}
-	pass_hash = {}
-	fail_hash = {}
-	@string = ''
-	@mm = ''
-	@ss = ''
-
-	file = './public/results.json'
-	json_file = File.read(file)
-
-	file_trim = json_file.tr("]", "")
-	json_trim = @json_string.tr("[", "")
-
-	new_file = file_trim + ',' + json_trim
-	converted_file = JSON.parse(new_file)
-
-	File.write('./public/results.json', new_file)
-
-	converted_file.each do |item|
-		item["result"].each do |result_item|
-			if result_item[0] == "duration"
-				time = result_item[1]
-				@mm, @ss = time.divmod(60)
-				@ss = @ss.to_i.to_s
-				if @ss.length == 1
-					@ss = "0" + @ss
-				end
-			end
-			if result_item[0] == "exitcode"
-				@exitcode = result_item[1]
-			end
-		end
-		captalised_profile = item["wp_title"].split("-").map(&:capitalize).join(" ")
-		new_hash[captalised_profile] = @exitcode, @mm.to_s+":"+@ss
-	end
-
-	@new_hash = new_hash
-	@pass_hash = pass_hash
-	@fail_hash = fail_hash
 
 	erb :dashboard_view
 end

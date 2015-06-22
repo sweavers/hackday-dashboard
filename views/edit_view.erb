@@ -6,40 +6,47 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <style>
-body {
-  background: white;
-}
+  body {
+    background: white;
+  }
 </style>
 <head>
 </head>
 <body>
-  <form>
-  <div class="form-group col-md-7">
-    <label for="wp_title">Work Package Title</label>
-    <input type="text" class="form-control" id="wp_title">
-  </div>
-  <div class="form-group col-md-7">
-    <label for="this_week">This Week</label>
-    <textarea type="text" class="form-control" rows="3" id="this_week"></textarea>
-  </div>
-  <div class="form-group col-md-7">
-    <label for="next_week">Next Week</label>
-    <textarea type="text" class="form-control" rows="3" id="next_week"></textarea>
-  </div>
-  <div class="form-group col-md-7">
-    <label for="rag_status">RAG Status</label>
-    <input type="text" class="form-control" id="rag_status">
-  </div>
-  <div class="form-group col-md-7">
-    <label for="rag_justification">RAG Justification</label>
-    <input type="text" class="form-control" id="rag_justification">
-  </div>
-  <div class="form-group col-md-7">
-    <label for="risks">Risks</label>
-    <input type="text" class="form-control" id="risks">
-  </div>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  <button type="submit" class="btn btn-default submit-button">Submit</button>
-</form>
+  <form name="input" action="update_json" method="post">
+    <div class="form-group col-md-7">
+      <label for="wp_title">Work Package Title</label>
+      <input type="text" class="form-control" name="wp_title" required>
+    </div>
+    <div class="form-group col-md-7">
+      <label for="this_week">This Week</label>
+      <textarea type="text" class="form-control" rows="3" name="this_week" required></textarea>
+    </div>
+    <div class="form-group col-md-7">
+      <label for="next_week">Next Week</label>
+      <textarea type="text" class="form-control" rows="3" name="next_week" required></textarea>
+    </div>
+
+    <div class="form-group col-md-7">
+      <label for="rag_status">RAG Status</label>
+      <select name="rag_status" class="form-control">
+        <option id="new" value="Green">Green</option>
+        <option id="fix" value="Amber">Amber</option>
+        <option id="functional" value="Red">Red</option>
+      </select>
+    </div>
+
+
+    <div class="form-group col-md-7">
+      <label for="rag_justification">RAG Justification</label>
+      <input type="text" class="form-control" name="rag_justification" required>
+    </div>
+    <div class="form-group col-md-7">
+      <label for="risks">Risks</label>
+      <input type="text" class="form-control" name="risks" required>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <button type="submit" class="btn btn-default submit-button">Submit</button>
+  </form>
 </body>
 </html>
