@@ -12,7 +12,7 @@ class DryCode
 	def convert_json
 		new_hash = {}
 		@string = ''
-		@mm = ''asjsa
+		@mm = ''
 		@ss = ''
 
 		file = './public/results.json'
