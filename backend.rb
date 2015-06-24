@@ -12,7 +12,7 @@ class DryCode
 	def convert_json
 		new_hash = {}
 		@string = ''
-		@mm = ''
+		@mm = ''aaa
 		@ss = ''
 
 		file = './public/results.json'
@@ -130,7 +130,7 @@ post '/update_json' do
 	file_trim = json_file.tr("]", "")
 
 	new_hash = {}
-	
+
 	new_json = ',{"wp_title":"' + wp_title + '","result":{"this_week":"' + this_week + '","next_week":"' + next_week + '","rag_status":"' + rag_status + '","rag_justification":"' + rag_justification + '","risks":"' + risks + '"}}'
 
 	new_file = file_trim + new_json + ']'
