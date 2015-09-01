@@ -22,30 +22,17 @@ class DryCode
 
 		converted_file.each do |item|
 			item["result"].each do |result_item|
-				if result_item[0] == "this_week"
-					@this_week = result_item[1]
-				end
-				if result_item[0] == "next_week"
-					@next_week = result_item[1]
-				end
 				if result_item[0] == "rag_status"
 					@rag_status = result_item[1]
 				end
-				if result_item[0] == "rag_justification"
-					@rag_justification = result_item[1]
-				end
-				if result_item[0] == "risks"
-					@risks = result_item[1]
+				if result_item[0] == "url"
+					@url = result_item[1]
 				end
 			end
 			captalised_profile = item["wp_title"]
 			new_hash[captalised_profile] = {}
-
-			new_hash[captalised_profile]['this_week'] = @this_week
-			new_hash[captalised_profile]['next_week'] = @next_week
 			new_hash[captalised_profile]['rag_status'] = @rag_status
-			new_hash[captalised_profile]['rag_justification'] = @rag_justification
-			new_hash[captalised_profile]['risks'] = @risks
+			new_hash[captalised_profile]['url'] = @url
 		end
 		new_hash = Hash[new_hash.sort]
 		new_hash
@@ -116,21 +103,12 @@ post '/update_json' do
 	rag_justification = params["rag_justification"]
 	risks = params["risks"]
 
-	puts '#############################'
-	puts wp_title
-	puts this_week
-	puts next_week
-	puts rag_status
-	puts rag_justification
-	puts risks
-	puts '#############################'
-
 	file = './public/results.json'
 	json_file = File.read(file)
 	file_trim = json_file.tr("]", "")
 
 	new_hash = {}
-	
+
 	new_json = ',{"wp_title":"' + wp_title + '","result":{"this_week":"' + this_week + '","next_week":"' + next_week + '","rag_status":"' + rag_status + '","rag_justification":"' + rag_justification + '","risks":"' + risks + '"}}'
 
 	new_file = file_trim + new_json + ']'
