@@ -39,17 +39,38 @@
 </head>
 <body>
 <% count = 0
-	@new_hash.each do |profile, data|
-		rag_status = data['rag_status']
-		url = data['url']
+	@new_hash.each do |tile_title, data|
+		status = data['status']
+		sub_heading_body_1 = data['sub_heading_body_1']
+		sub_heading_body_2 = data['sub_heading_body_2']
 		count = count + 1%>
-		<a target="_blank" href="<%=url%>">
-			<button type="button" class="<%=rag_status%>" data-toggle="modal" data-target="">
+		<button type="button" class="<%=status%>" data-toggle="modal" data-target="#myModal<%=count%>">
 				<div class="centreMe">
-				  <div><b><%=profile%></b></div>
+				  <div><b><%=tile_title%></b></div>
 				</div>
 			</button>
-		</a>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal<%=count%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-xl">
+					<div class="modal-content">
+					  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">x</button>
+							<h4 class="modal-title" id="myModalLabel"><%=tile_title%></h4>
+					  </div>
+						<div class="sub-header">Sub-heading 1:</div>
+					  <div class="modal-body">
+							<%=sub_heading_body_1%>
+					  </div>
+						<div class="sub-header">Sub-heading 2:</div>
+						<div class="modal-body">
+							<%=sub_heading_body_2%>
+						</div>
+					  <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					  </div>
+					</div>
+			  </div>
+			</div>
 <% end %>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br>

@@ -22,17 +22,22 @@ class DryCode
 
 		converted_file.each do |item|
 			item["result"].each do |result_item|
-				if result_item[0] == "rag_status"
-					@rag_status = result_item[1]
+				if result_item[0] == "status"
+					@status = result_item[1]
 				end
-				if result_item[0] == "url"
-					@url = result_item[1]
+				if result_item[0] == "sub_heading_body_1"
+					@sub_heading_body_1 = result_item[1]
+				end
+				if result_item[0] == "sub_heading_body_2"
+					@sub_heading_body_2 = result_item[1]
 				end
 			end
-			captalised_profile = item["wp_title"]
+			captalised_profile = item["tile_title"]
 			new_hash[captalised_profile] = {}
-			new_hash[captalised_profile]['rag_status'] = @rag_status
-			new_hash[captalised_profile]['url'] = @url
+
+			new_hash[captalised_profile]['status'] = @status
+			new_hash[captalised_profile]['sub_heading_body_1'] = @sub_heading_body_1
+			new_hash[captalised_profile]['sub_heading_body_2'] = @sub_heading_body_2
 		end
 		new_hash = Hash[new_hash.sort]
 		new_hash
@@ -87,49 +92,5 @@ get '/dashboard' do
 	@width_value = width_value
 	@height_value = height_value
 	@new_hash = new_hash
-	erb :dashboard_view
-end
-
-get '/edit' do
-	erb :edit_view
-end
-
-
-post '/update_json' do
-	wp_title = params["wp_title"]
-	this_week = params["this_week"]
-	next_week = params["next_week"]
-	rag_status = params["rag_status"]
-	rag_justification = params["rag_justification"]
-	risks = params["risks"]
-
-	file = './public/results.json'
-	json_file = File.read(file)
-	file_trim = json_file.tr("]", "")
-
-	new_hash = {}
-
-	new_json = ',{"wp_title":"' + wp_title + '","result":{"this_week":"' + this_week + '","next_week":"' + next_week + '","rag_status":"' + rag_status + '","rag_justification":"' + rag_justification + '","risks":"' + risks + '"}}'
-
-	new_file = file_trim + new_json + ']'
-
-	File.write(file, new_file)
-
-	new_hash = class_obj.convert_json
-
-	item_count = 0
-	new_hash.each do |item|
-		item_count = item_count + 1
-	end
-
-	root = Math.sqrt(item_count)
-
-	width_value = class_obj.get_width(root)
-	height_value = class_obj.get_height(root)
-
-	@width_value = width_value
-	@height_value = height_value
-	@new_hash = new_hash
-
 	erb :dashboard_view
 end
