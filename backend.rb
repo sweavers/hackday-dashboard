@@ -3,8 +3,8 @@ require 'sinatra/reloader'
 require 'json'
 
 set :port, 8089
-set :environment, :development
-#set :environment, :production
+#set :environment, :development
+set :environment, :production
 set :server, 'webrick'
 
 
