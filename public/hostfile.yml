@@ -1,0 +1,6 @@
+---
+services:
+  - Digital Register Frontend: 192.168.249.49:5000/health
+  - Digital Register API:      192.168.249.51:5000/health
+  - Login API:                 192.168.249.52:5000/health
+  - Feeder:                    192.168.249.53:5000/health
