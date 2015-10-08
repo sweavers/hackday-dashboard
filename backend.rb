@@ -142,3 +142,29 @@ get '/dashboard' do
 	@new_hash = new_hash
 	erb :dashboard_view
 end
+
+get '/health' do
+	new_hash = {}
+	host_hash = class_obj.convert_yaml
+
+	@up = true
+
+	host_hash.each do |name, uri|
+		status_code = ''
+		response = class_obj.get_request(uri)
+		converted_response = JSON.parse(response)
+		converted_response.each do |status|
+			if status[1] == 'ok'
+				status_code = 'Green'
+			else
+				status_code = 'Red'
+				@up = false
+			end
+		end
+
+		new_hash[name] = status_code
+	end
+
+	@up
+	erb :health_view
+end
