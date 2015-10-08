@@ -1,10 +1,13 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'net/http'
+require 'uri'
+require 'yaml'
 
 set :port, 8089
-#set :environment, :development
-set :environment, :production
+set :environment, :development
+#set :environment, :production
 set :server, 'webrick'
 
 
@@ -72,12 +75,55 @@ class DryCode
 
 		@height_value = height_value.to_s
 	end
+
+	def convert_yaml
+		new_hash = {}
+		config = YAML.load_file('./public/hostfile.yml')
+		config['services'].each do |service|
+			service.each do |name, uri|
+				new_hash[name] = uri
+			end
+		end
+		new_hash
+	end
+
+	def get_request (hostname)
+		encoded_url = URI.encode("http://" + hostname.to_s)
+		uri = URI.parse(encoded_url)
+		request = Net::HTTP.new(uri)
+		request.continue_timeout = 3
+		request.keep_alive_timeout = 3
+		request.open_timeout = 3
+		request.read_timeout = 3
+		response = Net::HTTP.get(uri)
+		response
+
+		rescue Timeout::Error
+			response = '{"status": "timeout"}'
+			response
+	end
 end
 
 class_obj = DryCode.new
 
 get '/dashboard' do
-	new_hash = class_obj.convert_json
+	new_hash = {}
+	host_hash = class_obj.convert_yaml
+
+	host_hash.each do |name, uri|
+		status_code = ''
+		response = class_obj.get_request(uri)
+		converted_response = JSON.parse(response)
+		converted_response.each do |status|
+			if status[1] == 'ok'
+				status_code = 'Green'
+			else
+				status_code = 'Red'
+			end
+		end
+
+		new_hash[name] = status_code
+	end
 
 	item_count = 0
 	new_hash.each do |item|
