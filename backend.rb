@@ -6,8 +6,8 @@ require 'uri'
 require 'yaml'
 
 set :port, 8089
-set :environment, :development
-#set :environment, :production
+#set :environment, :development
+set :environment, :production
 set :server, 'webrick'
 
 
@@ -147,7 +147,7 @@ get '/health' do
 	new_hash = {}
 	host_hash = class_obj.convert_yaml
 
-	@up = true
+	@up = status 200
 
 	host_hash.each do |name, uri|
 		status_code = ''
@@ -158,7 +158,7 @@ get '/health' do
 				status_code = 'Green'
 			else
 				status_code = 'Red'
-				@up = false
+				@up = status 500
 			end
 		end
 
