@@ -15,8 +15,8 @@
 		float: left;
 		border: 2px solid #BDC3C7;
 		position:relative;
-	}			
-	
+	}
+
 	.Amber {
 		background: #EB9532;
 		width:<%= @width_value + "%;"%>
@@ -24,8 +24,8 @@
 		float: left;
 		border: 2px solid #BDC3C7;
 		position:relative;
-	}			
-	
+	}
+
 	.Red {
 		background: #D64541;
 		width:<%= @width_value + "%;"%>
@@ -36,55 +36,17 @@
 	}
 </style>
 <head>
+<meta http-equiv="refresh" content="5">
 </head>
 <body>
 <% count = 0
-	@new_hash.each do |profile, data|
-		this_week = data['this_week']
-		next_week = data['next_week']
-		rag_status = data['rag_status']
-		rag_justification = data['rag_justification']
-		risks = data['risks']
+	@new_hash.each do |service, status|
 		count = count + 1%>
-			<button type="button" class="<%=rag_status%>" data-toggle="modal" data-target="#myModal<%=count%>">
+		<button type="button" class="<%=status%>" data-toggle="modal" data-target="#myModal<%=count%>">
 				<div class="centreMe">
-				  <div><b><%=profile%></b></div>
+				  <div><b><%=service%></b></div>
 				</div>
 			</button>
-			<!-- Modal -->
-			<div class="modal fade" id="myModal<%=count%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			  <div class="modal-dialog modal-xl">
-					<div class="modal-content">
-					  <div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">x</button>
-							<h4 class="modal-title" id="myModalLabel"><%=profile%></h4>
-					  </div>
-						<div class="sub-header">What has happened this week:</div>
-					  <div class="modal-body">
-							<%=this_week%>
-					  </div>
-						<div class="sub-header">What is planned for next week:</div>
-						<div class="modal-body">
-							<%=next_week%>
-						</div>
-						<div class="sub-header">Delivery RAG status:</div>
-						<div class="modal-body">
-							<%=rag_status%>
-						</div>
-						<div class="sub-header">RAG status justification:</div>
-						<div class="modal-body">
-							<%=rag_justification%>
-						</div>
-						<div class="sub-header">Risks/Issues:</div>
-						<div class="modal-body">
-							<%=risks%>
-						</div>
-					  <div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					  </div>
-					</div>
-			  </div>
-			</div>
 <% end %>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br>
